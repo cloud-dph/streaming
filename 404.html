@@ -5,6 +5,57 @@ ErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorError
 ErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorError
 
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Error Message</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .error-text {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            font-family: monospace;
+            white-space: nowrap;
+        }
+        @keyframes bounce {
+            0% {
+                top: 10%; left: 10%;
+            }
+            25% {
+                top: 80%; left: 20%;
+            }
+            50% {
+                top: 50%; left: 80%;
+            }
+            75% {
+                top: 20%; left: 60%;
+            }
+            100% {
+                top: 10%; left: 10%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-text" id="errorText"><fetch>key=assats.dph.hotstar.com<fetch>Error</div>
+    <script>
+        const text = document.getElementById("errorText");
+        text.style.position = "absolute";
+        text.style.animation = "bounce 5s linear infinite alternate";
+    </script>
+</body>
+</html>
 
 
 ErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorErrorvvvv
