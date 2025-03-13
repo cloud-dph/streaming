@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Enable Notifications</h1>
+    <button onclick="requestNotificationPermission()">Request Notification</button>
+
+    <script>
+        function requestNotificationPermission() {
+            console.log("Checking Notification support...");
+            if (!("Notification" in window)) {
+                alert("Your browser does not support notifications.");
+                console.error("Notifications not supported.");
+                return;
+            }
+
+            console.log("Requesting permission...");
+            Notification.requestPermission().then(permission => {
+                console.log("Permission result:", permission);
+                if (permission === "granted") {
+                    sendNotification();
+                } else if (permission === "denied") {
+                    alert("You blocked notifications. Enable them in Chrome settings.");
+                    console.warn("Notifications blocked.");
+                }
+            }).catch(error => {
+                console.error("Permission request error:", error);
+            });
+        }
+
+        function sendNotification() {
+            console.log("Sending notification...");
+            try {
+                new Notification("Watch Yeh Rishta Kya Kehlata Hai!", {
+                    body: "Click to watch the latest episode.",
+                    icon: "https://upload.wikimedia.org/wikipedia/en/5/5b/Yeh_Rishta_Kya_Kehlata_Hai_Logo.jpeg"
+                });
+                console.log("Notification sent.");
+            } catch (error) {
+                console.error("Notification error:", error);
+            }
+        }
+    </script>
+
+</body>
+</html>
