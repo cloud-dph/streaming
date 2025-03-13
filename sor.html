@@ -10,21 +10,15 @@
             text-align: center;
             margin: 50px;
         }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
 
-    <h1>Enable Notifications</h1>
-    <p>Click the button below to receive a notification.</p>
-    <button onclick="requestNotificationPermission()">Enable Notification</button>
+    <h1>Chrome Notification</h1>
+    <p>We will ask for notification permission automatically.</p>
 
     <script>
-        function requestNotificationPermission() {
+        document.addEventListener("DOMContentLoaded", () => {
             if ("Notification" in window) {
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
@@ -36,13 +30,15 @@
             } else {
                 alert("Your browser does not support notifications.");
             }
-        }
+        });
 
         function sendNotification() {
-            new Notification("Watch Yeh Rishta Kya Kehlata Hai!", {
-                body: "Click to watch the latest episode now.",
-                icon: "https://upload.wikimedia.org/wikipedia/en/5/5b/Yeh_Rishta_Kya_Kehlata_Hai_Logo.jpeg"
-            });
+            if (Notification.permission === "granted") {
+                new Notification("Watch Yeh Rishta Kya Kehlata Hai!", {
+                    body: "Click to watch the latest episode.",
+                    icon: "https://upload.wikimedia.org/wikipedia/en/5/5b/Yeh_Rishta_Kya_Kehlata_Hai_Logo.jpeg"
+                });
+            }
         }
     </script>
 
