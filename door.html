@@ -3,46 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrome Notification</title>
+    <title>Send Notification</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 50px;
         }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
     <h1>Enable Notifications</h1>
-    <p>We will ask Chrome for notification permission.</p>
+    <p>Click the button below to receive a notification.</p>
+    <button onclick="requestNotificationPermission()">Enable Notification</button>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Check if the browser is Chrome
-            let isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-            if (!isChrome) {
-                alert("This feature works best on Google Chrome.");
-                return;
-            }
-
+        function requestNotificationPermission() {
             if ("Notification" in window) {
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
                         sendNotification();
-                    } else if (permission === "denied") {
-                        alert("You have blocked notifications. Enable them in Chrome settings.");
+                    } else {
+                        alert("You blocked notifications. Enable them in Chrome settings.");
                     }
                 });
             } else {
                 alert("Your browser does not support notifications.");
             }
-        });
+        }
 
         function sendNotification() {
             new Notification("Watch Yeh Rishta Kya Kehlata Hai!", {
-                body: "Click to watch the latest episode.",
+                body: "Click to watch the latest episode now.",
                 icon: "https://upload.wikimedia.org/wikipedia/en/5/5b/Yeh_Rishta_Kya_Kehlata_Hai_Logo.jpeg"
             });
         }
@@ -50,4 +48,3 @@
 
 </body>
 </html>
-
