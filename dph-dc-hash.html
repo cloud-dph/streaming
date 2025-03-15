@@ -6,111 +6,174 @@
     <title>Login</title>
     <script src="data.js" defer></script>
     <style>
-        /* Dark Theme Styles */
+        /* Dark Theme */
         body {
-            background-color: #121212;
-            color: #ffffff;
+            background-color: #0d0d0d;
+            color: white;
             font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            justify-content: flex-end; /* Moves content to bottom */
             height: 100vh;
             margin: 0;
+            padding-bottom: 30px; /* Space at the bottom */
         }
 
-        .login-container {
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
             text-align: center;
-            width: 300px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 14px;
+            color: #bbb;
+            margin-top: 5px;
+        }
+
+        .input-container {
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-top: 20px;
+        }
+
+        .input-container span {
+            color: #bbb;
+            font-size: 18px;
+            margin-right: 8px;
         }
 
         input {
+            border: none;
+            background: transparent;
+            color: white;
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #333;
+            outline: none;
+            font-size: 18px;
+        }
+
+        .otp-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .otp-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .otp-box input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
             border-radius: 5px;
-            background-color: #2c2c2c;
+            border: 1px solid #333;
+            background: #222;
             color: white;
         }
 
         button {
             width: 100%;
-            padding: 10px;
-            margin-top: 10px;
+            padding: 12px;
             border: none;
             border-radius: 5px;
-            background-color: #6200ea;
+            background: #6200ea;
             color: white;
             font-size: 16px;
             cursor: pointer;
+            margin-top: 15px;
         }
 
         button:hover {
-            background-color: #3700b3;
+            background: #3700b3;
         }
 
-        #otp-section {
-            display: none;
+        .resend {
+            margin-top: 20px;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .resend a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .resend a:hover {
+            text-decoration: underline;
+        }
+
+        .bottom-text {
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        .bottom-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .bottom-text a:hover {
+            text-decoration: underline;
         }
     </style>
     <script defer>
-        let generatedOTP = "";
-
         function sendOTP() {
-            const phone = document.getElementById("phone").value;
-            const user = users.find(u => u.phone === phone);
+            document.querySelector(".otp-container").style.display = "block";
 
-            if (!user) {
-                alert("User not found");
-                return;
-            }
-
-            // Generate a random OTP from the user's list
-            generatedOTP = user.otp[Math.floor(Math.random() * user.otp.length)];
-
-            document.getElementById("otp-section").style.display = "block";
-
-            // Auto-fill OTP after 2 seconds (simulating SMS received)
             setTimeout(() => {
-                document.getElementById("otp").value = generatedOTP;
+                const otpDigits = "1234".split(""); // Fake OTP
+                document.querySelectorAll(".otp-box input").forEach((input, index) => {
+                    input.value = otpDigits[index] || "";
+                });
             }, 2000);
         }
 
         function verifyOTP() {
-            const otp = document.getElementById("otp").value;
-
-            if (otp === generatedOTP) {
-                localStorage.setItem("loggedIn", "true");
-                window.location.href = "https://cloud-dph.github.io/streaming/home";
-            } else {
-                alert("Invalid OTP");
-            }
+            alert("OTP Verified (Fake Verification)");
         }
-
-        window.onload = function () {
-            if (localStorage.getItem("loggedIn")) {
-                window.location.href = "https://cloud-dph.github.io/streaming/home";
-            }
-        };
     </script>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <label for="phone">Enter Mobile Number:</label>
-        <input type="text" id="phone" placeholder="Enter your phone number">
+    <div class="container">
+        <h2>Login to watch for free</h2>
+        <p>We'll send you an OTP by SMS to confirm your mobile number.</p>
+        
+        <div class="input-container">
+            <span>+91</span>
+            <input type="text" placeholder="Mobile number">
+        </div>
+
         <button onclick="sendOTP()">Send OTP</button>
 
-        <div id="otp-section">
-            <label for="otp">Enter OTP:</label>
-            <input type="text" id="otp" placeholder="Waiting for OTP...">
+        <div class="otp-container">
+            <h3>Enter OTP</h3>
+            <div class="otp-box">
+                <input type="text" maxlength="1">
+                <input type="text" maxlength="1">
+                <input type="text" maxlength="1">
+                <input type="text" maxlength="1">
+            </div>
             <button onclick="verifyOTP()">Login</button>
+            <p class="resend">Resend OTP in 00:30</p>
         </div>
     </div>
+
+    <p class="bottom-text">Having trouble logging in? <a href="#">Get Help</a></p>
 </body>
 </html>
