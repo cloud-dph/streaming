@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Google Sheets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        p {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <input type="text" id="mobile" placeholder="Mobile No">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        const API_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL"; // Replace with your Google Apps Script Web App URL
+
+        async function login() {
+            const mobile = document.getElementById("mobile").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const message = document.getElementById("message");
+
+            if (!mobile || !password) {
+                message.textContent = "Please enter mobile number and password.";
+                return;
+            }
+
+            try {
+                let response = await fetch(API_URL);
+                let users = await response.json();
+
+                let user = users.find(u => u.mobile === mobile && u.password === password);
+
+                if (user) {
+                    message.style.color = "green";
+                    message.textContent = "Login successful! Redirecting...";
+                    setTimeout(() => window.location.href = "https://abc.xyz", 2000);
+                } else {
+                    message.style.color = "red";
+                    message.textContent = "Invalid credentials!";
+                }
+            } catch (error) {
+                message.textContent = "Error fetching data.";
+            }
+        }
+    </script>
+
+    <!-- Google Apps Script (Backend) -->
+    <script type="text/javascript">
+        function doGet() {
+            return HtmlService.createHtmlOutputFromFile("Index");
+        }
+
+        function getUsers() {
+            var sheet = SpreadsheetApp.openById("13rkSlvCsZ0ad5osqowLjXOYXUAHGuBOuV5FYok91nG4"); // Replace with your Sheet ID
+            var data = sheet.getActiveSheet().getDataRange().getValues();
+            var users = [];
+
+            for (var i = 1; i < data.length; i++) {
+                users.push({
+                    fullName: data[i][0], // Column A: Full Name
+                    mobile: data[i][1],   // Column B: Mobile No
+                    password: data[i][2]  // Column C: Password
+                });
+            }
+
+            return ContentService.createTextOutput(JSON.stringify(users)).setMimeType(ContentService.MimeType.JSON);
+        }
+    </script>
+</body>
+</html>
