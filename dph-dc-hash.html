@@ -6,9 +6,10 @@
     <title>Login</title>
     <script src="data.js" defer></script>
     <script defer>
-        function login() {
+        let generatedOTP = "";
+
+        function sendOTP() {
             const phone = document.getElementById("phone").value;
-            const otpInput = document.getElementById("otp");
             const user = users.find(u => u.phone === phone);
 
             if (!user) {
@@ -16,23 +17,17 @@
                 return;
             }
 
-            otpInput.innerHTML = "";
-            user.otp.forEach(code => {
-                const option = document.createElement("option");
-                option.value = code;
-                option.textContent = code;
-                otpInput.appendChild(option);
-            });
+            // Generate a random OTP from the user's list
+            generatedOTP = user.otp[Math.floor(Math.random() * user.otp.length)];
+            console.log("OTP sent:", generatedOTP); // Simulating OTP being sent (replace with actual API if needed)
 
             document.getElementById("otp-section").style.display = "block";
         }
 
         function verifyOTP() {
-            const phone = document.getElementById("phone").value;
             const otp = document.getElementById("otp").value;
-            const user = users.find(u => u.phone === phone);
 
-            if (user && user.otp.includes(otp)) {
+            if (otp === generatedOTP) {
                 localStorage.setItem("loggedIn", "true");
                 window.location.href = "https://cloud-dph.github.io/streaming/home";
             } else {
@@ -51,13 +46,12 @@
     <h2>Login</h2>
     <label for="phone">Enter Mobile Number:</label>
     <input type="text" id="phone">
-    <button onclick="login()">Get OTP</button>
+    <button onclick="sendOTP()">Send OTP</button>
 
     <div id="otp-section" style="display:none;">
-        <label for="otp">Select OTP:</label>
-        <select id="otp"></select>
+        <label for="otp">Enter OTP:</label>
+        <input type="text" id="otp">
         <button onclick="verifyOTP()">Login</button>
     </div>
 </body>
 </html>
-
